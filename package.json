@@ -1,0 +1,22 @@
+{
+  "name": "video-music-app",
+  "version": "1.0.0",
+  "description": "Cross-platform video player with background music",
+  "private": true,
+  "workspaces": [
+    "web",
+    "mobile",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --workspaces",
+    "web:dev": "npm run dev --workspace=web",
+    "web:build": "npm run build --workspace=web",
+    "mobile:start": "npm run start --workspace=mobile",
+    "mobile:build": "npm run build --workspace=mobile",
+    "server:dev": "npm run dev --workspace=server",
+    "server:build": "npm run build --workspace=server",
+    "dev:all": "npm run dev:all --workspace=web & npm run dev --workspace=server"
+  }
+}

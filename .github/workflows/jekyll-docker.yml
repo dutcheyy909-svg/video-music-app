@@ -29,3 +29,17 @@ jobs:
             exit 1
           fi
           echo "Build completed successfully."
+          - name : Build Jekyll site using Docker
+      - name: Run HTMLProofer checks
+        run: |
+          docker run \
+            -v ${{ github.workspace }}:/srv/jekyll \
+            -w /srv/jekyll \
+            jekyll/jekyll:latest \
+            htmlproofer ./_site \
+              --check-html \
+              --check-img-http \
+              --check-favicon \
+              --allow-hash-href \
+              --empty-alt-ignore
+

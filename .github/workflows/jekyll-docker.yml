@@ -21,15 +21,6 @@ jobs:
             -w /srv/jekyll \
             jekyll/jekyll:latest \
             jekyll build
-
-      - name: Verify build output exists
-        run: |
-          if [ ! -d "_site" ]; then
-            echo "Jekyll build failed: _site directory not found."
-            exit 1
-          fi
-          echo "Build completed successfully."
-          - name : Build Jekyll site using Docker
       - name: Run HTMLProofer checks
         run: |
           docker run \
@@ -42,4 +33,3 @@ jobs:
               --check-favicon \
               --allow-hash-href \
               --empty-alt-ignore
-

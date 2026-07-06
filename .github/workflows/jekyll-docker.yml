@@ -1,4 +1,4 @@
-name: Jekyll site CI
+name: Jekyll CI (Docker)
 
 on:
   push:
@@ -8,13 +8,24 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the site in the jekyll/builder container
-      run: |
-        docker run \
-        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Jekyll site using Docker
+        run: |
+          docker run \
+            -v ${{ github.workspace }}:/srv/jekyll \
+            -w /srv/jekyll \
+            jekyll/jekyll:latest \
+            jekyll build
+
+      - name: Verify build output exists
+        run: |
+          if [ ! -d "_site" ]; then
+            echo "Jekyll build failed: _site directory not found."
+            exit 1
+          fi
+          echo "Build completed successfully."

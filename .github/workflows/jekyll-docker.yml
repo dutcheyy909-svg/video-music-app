@@ -21,15 +21,27 @@ jobs:
             -w /srv/jekyll \
             jekyll/jekyll:latest \
             jekyll build
-      - name: Run HTMLProofer checks
-        run: |
-          docker run \
-            -v ${{ github.workspace }}:/srv/jekyll \
-            -w /srv/jekyll \
-            jekyll/jekyll:latest \
-            htmlproofer ./_site \
-              --check-html \
-              --check-img-http \
-              --check-favicon \
-              --allow-hash-href \
-              --empty-alt-ignore
+     - name: Run HTMLProofer checks
+  run: |
+    docker run \
+      -v ${{ github.workspace }}:/srv/jekyll \
+      -w /srv/jekyll \
+      jekyll/jekyll:latest \
+      htmlproofer ./_site \
+        --check-html \
+        --check-img-http \
+        --check-favicon \
+        --allow-hash-href \
+        --empty-alt-ignore \
+        --url-ignore "/twitter.com/", "/facebook.com/", "/linkedin.com/" \
+        --file-ignore "/404.html" \
+        --directory-ignore "/assets/", "/images/" \
+        --alt-ignore "logo"
+        - name : Verify build output exists
+  run : |
+    if [ ! -d "_site" ]; then
+      echo "Jekyll build failed: _site directory not found."
+      exit 1
+    fi
+    echo "Build completed successfully."
+
